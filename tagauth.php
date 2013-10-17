@@ -56,7 +56,7 @@ function qr_auth_plugin() {
 add_action('login_footer', 'add_qr_login_link');
 
 function add_qr_login_link() {
-	$sr = get_site_url().'?action=ta_login';
+	$sr = get_site_url().'/?action=ta_login';
 ?>
     <div style="width:150px;margin:10px auto"><a href="<?php  echo $sr;?>" class="button-primary">Login with QR Code</a></div>
 <?php
@@ -109,7 +109,7 @@ function TagAuth_Settings() {
 			</tr>
 		</table>
 		<br>
-		Auth URL: <u><? echo get_site_url().'?action=ta_auth'?></u>
+		Auth URL: <u><? echo get_site_url().'/?action=ta_auth'?></u>
 		<br>
 		<br>				
 		<input type="submit" name="tag_authsettings_save" value="Save" class="button-primary">
@@ -275,9 +275,10 @@ function tagauth_query_request(&$wp)
 		if (empty($codeinfo))
 			HttpResponse(2);
 
+
 		if ($codeinfo[0]->code_expdate < time())
 			HttpResponse(2);
-				
+			
 		$code_id = $codeinfo[0]->code_id;
 		$query = "UPDATE srv_tagauth_code SET code_uid = '$uid', code_state = 1 WHERE code_id = '$code_id'";
 		$wpdb->query($query);
@@ -358,7 +359,7 @@ function DetectQRCode()
 	var c = jQuery("#c").val();
 	jQuery.ajax({
 		type: "POST",
-		url: "<?php echo get_site_url()?>" + '?action=ta_verify',
+		url: "<?php echo get_site_url()?>" + '/?action=ta_verify',
 		data: {action: 'ta_verify', code: c},
 		cache: false,
 		dataType: 'json',
