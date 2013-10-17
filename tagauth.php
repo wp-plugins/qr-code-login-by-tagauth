@@ -4,31 +4,36 @@
 Plugin Name: QR Code Login by TagAuth
 Description: Use mobile to login your wordpress site by scanning QR Code. 
 Version: 1
-Author: APSense.com
+Author: Inhao.com
 Tags: QR Code Login, inhao, tagbook, scan qr code, login wp by qrcode, apsense
 Author URI: http://www.inhao.com
 */
 
-$tagauth_plugin_url = plugins_url() . '/tagauth';
-
-add_action('admin_menu', 'qr_auth_plugin');
+$tagauth_plugin_url = plugins_url('' , __FILE__);
 add_action('plugins_loaded', 'init_qr_js_list');
+
+register_activation_hook( __FILE__, 'qr_auth_pluginInstall' );
 register_deactivation_hook( __FILE__, 'qr_auth_pluginUninstall' );
 
-function qr_auth_pluginUninstall() {
-    global $wpdb;
-	$wpdb->query("DROP TABLE IF EXISTS wp_tagauth_settings");
-	$wpdb->query("DROP TABLE IF EXISTS srv_tagauth_code");
-	$wpdb->query("DROP TABLE IF EXISTS srv_tagauth_user");
-	delete_option('tagauth_site_id');
-	delete_option('tagauth_site_key');
+if ( is_admin() ) {
+	add_filter('plugin_action_links', 'tagauth_plugin_action_links', 10, 2);
+	add_action('admin_menu', 'tagauth_admin_menu');
+}
+else
+{
+	add_action('admin_menu', 'tagauth_user_menu');
 }
 
-function init_qr_js_list() {
-    wp_enqueue_script('my_qrcode_js', plugins_url('/qrcode.js', __FILE__));
+function tagauth_admin_menu() {
+    add_dashboard_page('Get QR Key', 'Get QR Key', 'manage_options', 'get_qr_key', 'get_qr_key');
+	add_options_page('', 'TagAuth', 'manage_options', __FILE__, 'TagAuth_Settings', '', 6);
 }
 
-function qr_auth_plugin() {
+function tagauth_user_menu() {
+    add_dashboard_page('Get QR Key', 'Get QR Key', 'manage_options', 'get_qr_key', 'get_qr_key');
+}
+
+function qr_auth_pluginInstall() {
     global $wpdb;
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
     $sql = "CREATE TABLE IF NOT EXISTS `srv_tagauth_code` (
@@ -48,9 +53,18 @@ function qr_auth_plugin() {
             PRIMARY KEY (`uid`)
           ) ENGINE=MyISAM;";
     dbDelta($sql);
-    add_dashboard_page('TagAuth Settings', 'TagAuth Settings', 'manage_options', 'TagAuth_Settings', 'TagAuth_Settings');
-    add_dashboard_page('Get QR Key', 'Get QR Key', 'manage_options', 'get_qr_key', 'get_qr_key');
-    add_options_page('test1', 'test1', '', 'test1', 'test1');
+}
+
+function qr_auth_pluginUninstall() {
+    global $wpdb;
+	$wpdb->query("DROP TABLE IF EXISTS srv_tagauth_code");
+	$wpdb->query("DROP TABLE IF EXISTS srv_tagauth_user");
+	delete_option('tagauth_site_id');
+	delete_option('tagauth_site_key');
+}
+
+function init_qr_js_list() {
+    wp_enqueue_script('my_qrcode_js', plugins_url('/qrcode.js', __FILE__));
 }
 
 add_action('login_footer', 'add_qr_login_link');
@@ -61,7 +75,6 @@ function add_qr_login_link() {
     <div style="width:150px;margin:10px auto"><a href="<?php  echo $sr;?>" class="button-primary">Login with QR Code</a></div>
 <?php
 }
-
 
 function TagAuth_Settings() {
 	global $tagauth_plugin_url;
@@ -131,6 +144,8 @@ function TagAuth_Settings() {
 
 function get_qr_key() {
 
+	$plugin = plugin_basename(__FILE__);
+
     $user_id = get_current_user_id();
     global $wpdb;
 	global $tagauth_plugin_url;
@@ -147,8 +162,7 @@ function get_qr_key() {
 
 	if ($site_id == 0 || $site_key == '') 
 	{
-		echo "<h2>Please setup Site ID and API Key first. <a href='".$_SERVER['REQUEST_URI']."'>Click here to setup</a></h2>";
-		echo plugin_dir_url( $file );
+		echo "<h2>Please setup Site ID and API Key first. <a href='options-general.php?page=$plugin'>Click here to setup</a></h2>";
 	}
 	else 
 	{
@@ -432,5 +446,18 @@ setTimeout("DetectQRCode()", 5000);
 		exit();
 	}
     return;
+}
+
+function tagauth_plugin_action_links( $links, $file ) {
+
+	$plugin = plugin_basename(__FILE__);
+
+    // check to make sure we are on the correct plugin
+    if ( $file == $plugin ) {
+         $settings_link = "<a href=\"options-general.php?page=$plugin\">" . __('Settings', 'tagauth') . '</a>';
+        array_unshift( $links, $settings_link );
+    }
+ 
+    return $links;
 }
 ?>
