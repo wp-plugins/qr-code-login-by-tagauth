@@ -13,7 +13,7 @@ $tagauth_plugin_url = plugins_url('' , __FILE__);
 add_action('plugins_loaded', 'init_qr_js_list');
 
 register_activation_hook( __FILE__, 'qr_auth_pluginInstall' );
-register_deactivation_hook( __FILE__, 'qr_auth_pluginUninstall' );
+register_uninstall_hook( __FILE__, 'qr_auth_pluginUninstall' );
 
 if ( is_admin() ) {
 	add_filter('plugin_action_links', 'tagauth_plugin_action_links', 10, 2);
