@@ -2,7 +2,7 @@
 Contributors: APSense LTD
 Donate link: http://www.inhao.com/
 Tags: apsense, qr code, qr scanner, login by qr code, tagauth, tag auth,tagbook,inhao
-Requires at least: 1.0
+Requires at least: 3.5
 Tested up to: 3.6.1
 Stable tag: 3.6.1
 License: GPLv2 or later
@@ -53,6 +53,9 @@ Please send bug reports and suggestion using [this feedback form](http://inhao.c
 * Initial release
 
 == Changelog ==
+
+= 1.1 =
+* Change the visibility of "Get QR Key". All users can see it.
 
 = 1.0 =
 * Initial release

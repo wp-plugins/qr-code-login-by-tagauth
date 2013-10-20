@@ -3,7 +3,7 @@
 /*
 Plugin Name: QR Code Login by TagAuth
 Description: Use mobile to login your wordpress site by scanning QR Code. 
-Version: 1
+Version: 1.1
 Author: Inhao.com
 Tags: QR Code Login, inhao, tagbook, scan qr code, login wp by qrcode, apsense
 Author URI: http://www.inhao.com
@@ -19,18 +19,14 @@ if ( is_admin() ) {
 	add_filter('plugin_action_links', 'tagauth_plugin_action_links', 10, 2);
 	add_action('admin_menu', 'tagauth_admin_menu');
 }
-else
-{
-	add_action('admin_menu', 'tagauth_user_menu');
-}
 
 function tagauth_admin_menu() {
-    add_dashboard_page('Get QR Key', 'Get QR Key', 'manage_options', 'get_qr_key', 'get_qr_key');
+    add_dashboard_page('Get QR Key', 'Get QR Key', 'read', 'get_qr_key', 'get_qr_key');
 	add_options_page('', 'TagAuth', 'manage_options', __FILE__, 'TagAuth_Settings', '', 6);
 }
 
 function tagauth_user_menu() {
-    add_dashboard_page('Get QR Key', 'Get QR Key', 'manage_options', 'get_qr_key', 'get_qr_key');
+    add_dashboard_page('Get QR Key', 'Get QR Key', 'read', 'get_qr_key', 'get_qr_key');
 }
 
 function qr_auth_pluginInstall() {
