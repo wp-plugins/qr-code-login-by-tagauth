@@ -1,12 +1,12 @@
 <?php
 
 /*
-Plugin Name: QR Code Login by TagAuth
+Plugin Name: QR Code Login
 Description: Use mobile to login your wordpress site by scanning QR Code. 
-Version: 1.1
-Author: Inhao.com
+Version: 1.2
+Author: iMC Info Tech Co., Ltd
 Tags: QR Code Login, inhao, tagbook, scan qr code, login wp by qrcode, apsense
-Author URI: http://www.inhao.com
+Author URI: http://www.imetacloud.com
 */
 
 $tagauth_plugin_url = plugins_url('' , __FILE__);
@@ -118,16 +118,17 @@ function TagAuth_Settings() {
 			</tr>
 		</table>
 		<br>
-		Auth URL: <u><? echo get_site_url().'/?action=ta_auth'?></u>
+		Auth URL: <u><?php echo get_site_url().'/?action=ta_auth'?></u>
 		<br>
 		<br>				
 		<input type="submit" name="tag_authsettings_save" value="Save" class="button-primary">
 		</form>
 		<h2>How to get Site ID & API Key</h2>
 		1. Download FREE APP "<b>Tagbook</b>" and create a free account. (See the download link below).<br>
-		2. <a href="http://inhao.com/developer" target="_blank">Login Developer Area with your account.</a><br>
-		3. Click the left menu "TagAuth" and create a site.<br>
-		4. Get Site ID and API Key from the right list.<br><br>
+		2. <a href="http://inhao.com/admin" target="_blank">Login iMC Platform</a>.<br>
+		3. Click here to open <a href="http://inhao.com/developer" target="_blank">Developer Area</a>.<br>
+		4. Click the left menu "Developer" and click "TagAuth", then create a site.<br>
+		5. After creating a site, you may get site ID and API Key and fill this form.<br><br>
 		
 		<h3>Download the APP "<b>Tagbook</b>"</h3>
 		You may find Tagbook on iOS App Store or Google Play by searching for the term "<b>Tagbook</b>".<br><br>
@@ -345,13 +346,13 @@ function tagauth_query_request(&$wp)
 <input type="hidden" id="code" value="AUTH.<?php echo $site_id.'.'.$token; ?>">
 <input type="hidden" id="c" value="<?php echo $token; ?>">
 <div id="qrcode"></div>
-<div><img src="qrloading.gif" style="padding-left: 88px;padding-top: 10px;"></div>
+<div><img src="<?php echo $tagauth_plugin_url ?>/qrloading.gif" style="padding-left: 88px;padding-top: 10px;"></div>
 </div>
 <div style="width:500px;margin:40px auto">
 <h3>Use Tagbook to Scan This QR Code</h3>
 You may find Tagbook on iOS App Store or Google Play by searching for the term "<b>Tagbook</b>".<br><br>
 <p align="center">
-<a href="https://play.google.com/store/apps/details?id=com.inhao.tagbook" target="_blank"><img src="<? echo $tagauth_plugin_url ?>/btn_android.png"></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://itunes.apple.com/us/app/tagbook/id700768972" target="_blank"><img src="<? echo $tagauth_plugin_url ?>/btn_iphone.png"></a>
+<a href="https://play.google.com/store/apps/details?id=com.inhao.tagbook" target="_blank"><img src="<?php echo $tagauth_plugin_url ?>/btn_android.png"></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://itunes.apple.com/us/app/tagbook/id700768972" target="_blank"><img src="<?php echo $tagauth_plugin_url ?>/btn_iphone.png"></a>
 <br><br>
 <a href="<?php echo(admin_url());?>" style="font-size:13px">Return to Login Page</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://inhao.com" style="font-size:13px" target="_blank">Powered by Inhao Tagbook</a>
 </div>
