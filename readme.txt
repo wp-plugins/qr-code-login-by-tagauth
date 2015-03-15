@@ -1,5 +1,5 @@
 === TagAuth ===
-Contributors: iMC Info Tech Co., Ltd
+Contributors: iMC LTD.
 Donate link: http://www.imetacloud.com/
 Tags: apsense, qr code, qr scanner, login by qr code, tagauth, tag auth,tagbook,inhao,imc,imetacloud
 Requires at least: 3.5
